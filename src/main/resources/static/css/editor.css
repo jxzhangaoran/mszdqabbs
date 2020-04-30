@@ -1,0 +1,108 @@
+.hiddenFirst {
+	display: none !important;
+}
+
+@media screen and (max-width: 320px) {
+	.typeDescription h3 {
+		font-size: 1em;
+	}
+}
+
+.typeDescription h1 {
+	display: inline-block;
+}
+
+.typeDescription h3 {
+	margin-top: 14px;
+	float: right;
+	color: gray;
+	display: inline-block;
+}
+
+#articleTitleLabel,#editArticleTitleLabel,#questionTitleLabel {
+	display: inline-block;
+	height: 2em;
+	line-height: 2em;
+	font-size: 2em;
+}
+
+#articleTitleInputContainer,#articleTitleInputContainer,#questionTitleInputContainer {
+	margin-top: 0.75em;
+	display: inline-block;
+	float: right;
+	width: 70%;
+}
+
+#articleTitleInputContainer input,#articleTitleInputContainer input,#questionTitleInputContainer input {
+	font-size: 1.2em;
+	width: 100%;
+}
+
+@media screen and (max-width: 1024px) {
+	#articleTitleLabel,#editArticleTitleLabel,#questionTitleLabel {
+		font-size: 1.5em;
+		margin-top: 0.5em;
+	}
+	
+	#articleTitleInputContainer,#articleTitleInputContainer,#questionTitleInputContainer {
+		margin-top: 1.2em;
+		width: 60%;
+	}
+	
+	#articleTitleInputContainer input,#articleTitleInputContainer input,#questionTitleInputContainer input {
+		font-size: 0.8em;
+	}
+}
+
+#markdownContainer {
+	margin-top: 2em;
+	height: 512px;
+	margin-bottom: 1em;
+}
+
+@media screen and (max-width: 400px) {
+	#markdownHelper p {
+		font-size: 0.8em;
+	}
+}
+
+.submitBtn {
+	float: right;
+	font-size: 1.5em !important;
+}
+
+#submitContainer {
+	height: 80px;
+}
+
+#mobileEditTip {
+	display: none;
+	position: fixed;
+	bottom: 5px;
+	left: 2.5%;
+	z-index: 99999;
+	width: 95%;
+}
+
+@media screen and (max-width: 768px) {
+	#mobileEditTip {
+		display: block;
+	}
+}
+
+.questionToAnswerTitleDiv,.questionToEditAnswerTitleDiv {
+	margin-top: 2em;
+	margin-bottom: 2em;
+	text-align: center;
+}
+
+.questionToAnswerTitleDiv a,.questionToEditAnswerTitleDiv a {
+	text-decoration: none;
+	color: black;
+	font-weight: 400;
+	text-shadow: 3px 3px 3px gray;
+}
+
+.questionToAnswerTitleDiv a:hover,.questionToEditAnswerTitleDiv a:hover {
+	color: royalblue;
+}

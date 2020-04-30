@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="matsk.mszdqabbs.DAO.CommentDAO">
+    <insert id="comment" parameterType="matsk.mszdqabbs.Pojo.Comment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO comment(
+        id,
+        content,
+        commentator,
+        to_comment,
+        to_comment_type,
+        comment_time
+        )
+        VALUES(
+        #{id},
+        #{content},
+        #{commentator},
+        #{to_comment},
+        #{to_comment_type},
+        #{comment_time}
+        )
+    </insert>
+
+    <select id="getCommentCountOf" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM comment
+        WHERE to_comment = #{to_comment}
+        AND to_comment_type = #{to_comment_type}
+    </select>
+
+    <select id="getTopComments" resultType="matsk.mszdqabbs.Pojo.Comment">
+        SELECT * FROM comment
+        WHERE to_comment = #{to_comment}
+        AND to_comment_type = #{to_comment_type}
+        ORDER BY comment_time DESC
+        LIMIT #{howMany}
+    </select>
+
+    <select id="getRemainAllComments" resultType="matsk.mszdqabbs.Pojo.Comment">
+        SELECT * FROM comment
+        WHERE to_comment = #{to_comment}
+        AND to_comment_type = #{to_comment_type}
+        ORDER BY comment_time DESC
+        LIMIT #{offSet},9999999999
+    </select>
+
+    <select id="getLikeCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT COUNT(*) FROM agreeornot
+        WHERE to_evaluate = #{commentId}
+        AND evaluate_type = 3
+        AND agreeornot = 1
+    </select>
+
+    <select id="getDislikeCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT COUNT(*) FROM agreeornot
+        WHERE to_evaluate = #{commentId}
+        AND evaluate_type = 3
+        AND agreeornot = 0
+    </select>
+
+    <select id="getCommentsBy" parameterType="java.lang.Integer" resultType="matsk.mszdqabbs.Pojo.Comment">
+        SELECT * FROM comment
+        WHERE commentator = #{commentator}
+        ORDER BY comment_time DESC
+    </select>
+</mapper>

@@ -1,0 +1,100 @@
+body {
+	background-color: #2196F3;
+}
+
+.column {
+	max-width: 432px;
+}
+
+#infoform {
+	display: none;
+}
+
+#emailsender {
+	max-width: 80px;
+}
+
+@media screen and (max-width: 767px) {
+	#steps {
+		display: none;
+	}
+	
+	#emailsender {
+		font-size: 10px;
+	}
+}
+
+#steps {
+	width: 404px;
+	max-width: 432px;
+}
+
+#steps .description {
+	font-size: 5px;
+}
+
+#welcometitle {
+	margin-top: 50px;
+}
+
+#welcometitle .content {
+	color: white;
+	text-shadow: -3px 3px 0 rgba(0,0,0,.1);
+}
+
+#logocontainer {
+	margin-top: 50px;
+}
+
+#logocontainer img {
+	width: 200px;
+	height: auto;
+
+	animation: logoimgfilterloop 5s linear infinite;
+}
+
+/*logo图片呼吸灯效果*/
+@keyframes logoimgfilterloop {
+	0%   {filter: drop-shadow(0px 0px 2px white);}
+	25%  {filter: drop-shadow(0px 0px 5px white);}
+	50%  {filter: drop-shadow(0px 0px 8px white);}
+	75%  {filter: drop-shadow(0px 0px 5px white);}
+	100% {filter: drop-shadow(0px 0px 2px white);}
+}
+
+@-webkit-keyframes logoimgfilterloop {
+	0%   {filter: drop-shadow(0px 0px 2px white);}
+	25%  {filter: drop-shadow(0px 0px 5px white);}
+	50%  {filter: drop-shadow(0px 0px 8px white);}
+	75%  {filter: drop-shadow(0px 0px 5px white);}
+	100% {filter: drop-shadow(0px 0px 2px white);}
+}
+
+@-moz-keyframes logoimgfilterloop {
+	0%   {filter: drop-shadow(0px 0px 2px white);}
+	25%  {filter: drop-shadow(0px 0px 5px white);}
+	50%  {filter: drop-shadow(0px 0px 8px white);}
+	75%  {filter: drop-shadow(0px 0px 5px white);}
+	100% {filter: drop-shadow(0px 0px 2px white);}
+}
+
+@-o-keyframes logoimgfilterloop {
+	0%   {filter: drop-shadow(0px 0px 2px white);}
+	25%  {filter: drop-shadow(0px 0px 5px white);}
+	50%  {filter: drop-shadow(0px 0px 8px white);}
+	75%  {filter: drop-shadow(0px 0px 5px white);}
+	100% {filter: drop-shadow(0px 0px 2px white);}
+}
+
+@-ms-keyframes logoimgfilterloop {
+	0%   {filter: drop-shadow(0px 0px 2px white);}
+	25%  {filter: drop-shadow(0px 0px 5px white);}
+	50%  {filter: drop-shadow(0px 0px 8px white);}
+	75%  {filter: drop-shadow(0px 0px 5px white);}
+	100% {filter: drop-shadow(0px 0px 2px white);}
+}
+
+#redirecttime {
+	font-weight: bold;
+	color: red;
+}

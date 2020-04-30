@@ -1,0 +1,187 @@
+.noInvitation {
+	height: 90vh;
+	text-align: center;
+	display: none;
+}
+
+.noInvitation img {
+	width: 200px;
+	height: auto;
+	margin-top: 20vh;
+	filter: invert(40%);
+}
+
+.noInvitationTip {
+	margin-top: 5vh;
+}
+
+.noInvitationTip h1,.noInvitationTip h4 {
+	color: #999999;
+}
+
+.hasInvitation {
+	display: none;
+}
+
+.loadingHolder {
+	font-size: 1.5em;
+}
+
+.howManyInvitations,.readAll {
+	display: inline-block;
+}
+
+.readAll {
+	float: right;
+}
+
+.invitationBody {
+	clear: both;
+}
+
+.clickToReadAll {
+	color: royalblue;
+	cursor: pointer;
+}
+
+.clickToReadAll:hover {
+	color: skyblue;
+	font-weight: 500;
+}
+
+.howManyInvitationsWord {
+	color: gray;
+}
+
+.invitationHeader {
+	margin-bottom: 2em;
+	margin-left: 1.5em;
+	margin-right: 1.5em;
+}
+
+.invitation a {
+	color: black;
+	font-family: "microsoft yahei";
+	font-weight: 600;
+}
+
+.invitation a:hover {
+	color: royalblue;
+}
+
+.inviterInfos {
+	height: 3em;
+	padding: 1em !important;
+	position: relative;
+}
+
+.inviterHeadPhoto {
+	display: inline-block;
+	height: 100%;
+	line-height: 100%;
+}
+
+.inviterHeadPhoto img {
+	height: 3em;
+	width: 3em;
+	border-radius: 100%;
+	vertical-align: middle;
+}
+
+.inviterNickname {
+	display: inline-block;
+	margin-left: 1em;
+	max-width: 70%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	vertical-align: middle;
+}
+
+.inviterNickname a,.inviterNickname .inviteTip {
+	vertical-align: middle;
+}
+
+.inviteTip {
+	color: gray;
+}
+
+.inviteQuestionTitle {
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+	padding-left: 2em;
+	padding-right: 2em;
+}
+
+.quote {
+	font-size: 0.5em !important;
+	vertical-align: top;
+}
+
+.inviteBottom {
+	margin-bottom: 0em;
+	height: 4em;
+	line-height: 2em;
+}
+
+.inviteTime {
+	display: inline-block;
+	color: gray;
+	vertical-align: middle;
+	padding: 1em !important;
+}
+
+.inviteActions {
+	display: inline-block;
+	float: right;
+	vertical-align: middle;
+	padding: 1em;
+}
+
+.inviteActions button {
+	font-size: 0.8em;
+	padding-left: 0.8em !important;
+	padding-right: 0.8em !important;
+}
+
+@media screen and (max-width: 400px) {
+	.inviteTime {
+		display: block !important;
+		float: left !important;
+	}
+	
+	.inviteActions {
+		display: block !important;
+		float: right !important;
+		margin-bottom: 1em !important;
+	}
+	
+	.inviteActions button {
+		font-size: 0.4em;
+		padding-left: 0.4em !important;
+		padding-right: 0.4em !important;
+	}
+}
+
+.invitation .divider {
+	margin: 0 !important;
+}
+
+.notReadRedPoint {
+	position: absolute;
+	top: 0.5em;
+	right: 1em;
+	color: red;
+}
+
+.invitationlist {
+	margin: 0 !important;
+}
+
+.notReadRedPoint {
+	opacity: 0;
+}
+
+.notRead .notReadRedPoint {
+	opacity: 1 !important;
+}

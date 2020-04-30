@@ -1,0 +1,159 @@
+@media screen and (max-width: 450px) {
+	#answersearch {
+		width: 110px;
+	}
+}
+
+.eachanswercontainer {
+	padding-left: 2em;
+	padding-right: 2em;
+}
+
+.eachanswerbody {
+	margin-top: 1em !important;
+}
+
+.eachanswercontent {
+	max-height: 9.5em;
+	overflow: hidden;
+}
+
+.eachanswercontent p {
+	word-break: break-word;
+	white-space: normal;
+	overflow-y: hidden;
+	line-height: 1.23em;
+	font-size: 1.23em;
+	height: 100%;
+}
+
+.eachanswercontent a {
+	color: black;
+	cursor: pointer;
+}
+
+.eachanswercontent a:hover {
+	color: #646464;
+}
+
+.eachanswerimg {
+	text-align: center;
+}
+
+.eachanswerimg img {
+	height: auto;
+	width: auto;
+	border-radius: 4px;
+	max-width: 100%;
+	max-height: 9.5em;
+}
+
+.eachanswerbottom {
+	margin-top: 1em;
+	line-height: 3em;
+}
+
+.eachanswerheadphoto {
+	display: inline-block;
+	background-image: url(../image/default_headphoto.png);
+	background-size: 110% 110%;
+	background-repeat: no-repeat;
+	background-position: center;
+	border: 1.5px solid rgba(0,0,0,0);
+	border-radius: 100%;
+	height: 2.5em;
+	width: 2.5em;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+.eachansweranswerername {
+	font-size: 1em;
+	line-height: 1em;
+	height: 1em;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 0.5em;
+	cursor: pointer;
+}
+
+.eachansweranswerername:hover {
+	color: royalblue !important;
+}
+
+.hiddenMoreThan540 {
+	display: none;
+}
+
+@media screen and (max-width:540px) {
+	.hiddenMoreThan540 {
+		display: block;
+	}
+	
+	.eachanswerbottom {
+		margin-bottom: 3.5em;
+	}
+	
+	.eachanswerinfo {
+		float: left !important;
+	}
+}
+
+@media screen and (max-width:400px) {
+	.eachanswerinfo span {
+		font-size: 0.9em !important;
+	}
+	
+	#searchbox {
+		display: none;
+	}
+}
+
+@media screen and (max-width:335px) {
+	.eachanswerinfo span {
+		font-size: 0.7em !important;
+	}
+}
+
+.eachanswerinfo {
+	display: inline-block;
+	vertical-align: middle;
+	float: right;
+}
+
+.eachanswerinfo span {
+	font-size: 1em;
+	line-height: 1em;
+	vertical-align: middle;
+	margin-right: 1em;
+}
+
+.eachanswerinfo span {
+	cursor: pointer;
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+	-webkit-user-select: none;
+	-moz-user-focus: none;
+	-moz-user-select: none;
+}
+
+.eachanswerinfo span:hover {
+	color: #175199;
+}
+
+#answertemplate {
+	display: none;
+}
+
+.pageSelector {
+	text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+	.hiddenLessThan768 {
+		display: none !important;
+	}
+}
+
+.hideIfNotEmpty {
+	display: none;
+}

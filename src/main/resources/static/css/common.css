@@ -1,0 +1,221 @@
+@media screen and (max-width: 900px) {
+	.hidelowerthan900 {
+		display: none !important;
+	}
+	
+	#search {
+		margin-left: -20px;
+		width: 350px !important;
+	}
+}
+
+@media screen and (max-width: 500px) {
+	#search {
+		margin-left: -20px;
+		max-width: 200px !important;
+	}
+}
+
+@media screen and (min-width: 900px) {
+	.showhigherthan900 {
+		display: none !important;
+	}
+}
+
+#sidebar {
+	background-color: white;
+}
+
+#sidebar .item {
+	border-bottom: 1.5px solid #0285FF;
+	line-height: 2 !important;
+}
+
+#sidebar .item, #sidebar i {
+	color: rgba(0,0,0,1);
+	font-size: 1em;
+	font-weight: 900;
+}
+
+#sidebar i {
+	line-height: 1.5;
+	font-size: 1.5em;
+	color: #0285FF;
+}
+
+#sidebaruser {
+	margin-top: 1em;
+}
+
+#sidebarheadphoto {
+	background-image: url(../image/default_headphoto.png);
+	width: 60px;
+	height: 60px;
+	border: 1.5px solid dimgray;
+	margin-left: 29px;
+	margin-bottom: 10px;
+}
+
+#sidebarlogo {
+	background-image: url(../image/logo.png);
+	height: 30px;
+	width: 80px;
+	margin-left: 20px;
+}
+
+#sidebarheadphoto,#sidebarlogo {
+	margin-top: -6px;
+	background-size: 100% 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+#sidebarheadphoto {
+	border-radius: 50% !important;
+}
+
+#sidebarlogintips,#sidebarlogotips,#notlogin,.usernamediv {
+	text-align: center;
+	line-height: 2em;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+#sidebarlogintips a:hover {
+	font-weight: 900 !important;
+}
+
+#headphotocontainer {
+	cursor: pointer;
+}
+
+#headphotocontainer:hover {
+	border: 1.5px solid #0285FF !important;
+}
+
+#usertips {
+	min-width: 200px;
+}
+
+.loginhidden {
+	display: none !important;
+}
+
+#usernameinfo {
+	font-size: 2em !important;
+	font-weight: 900 !important;
+	line-height: 2em;
+}
+
+#loginmodal {
+	max-width: 300px;
+}
+
+#findPasswordModal {
+	max-width: 300px;
+}
+
+#success_modal, #failed_modal {
+	max-width: 400px;
+}
+
+@media screen and (max-width: 767px) {
+	#asidetop {
+		display: none;
+	}
+	
+	#asidebottom {
+		text-align: center;
+	}
+}
+
+#asidetop {
+	margin-bottom: 30px;
+	position: relative;
+	margin-bottom: 30px;
+	padding: 0 0 !important;
+}
+
+.asidetopinlineblock {
+	display: inline-block;
+	width: 49%;
+	text-align: center;
+	transition: all .2s;
+}
+
+.asidetopicon {
+	height: 60%;
+	text-align: center;
+	margin-bottom: 10%;
+}
+
+.asidetopicon img {
+	width: 40%;
+	height: 40%;
+}
+
+.asidetopdesc {
+	height: 30%;
+	text-align: center;
+	font-size: 1.5em;
+	font-weight: 800;
+	margin-bottom: 10%;
+}
+
+.asidetopinlineblock:hover {
+	background-color: #EFEFEF;
+	cursor: pointer;
+}
+
+@media screen and (max-width: 1024px) {
+	.clickToAskQuestion {
+		margin-left: 1px !important;
+	}
+	
+	#asidebottom p {
+		font-size: 1em !important;
+	}
+}
+
+.clickToAskQuestion {
+	margin-left: 2px;
+}
+
+#asidebottom p {
+	font-size: 1.1em;
+	color: #848484;
+}
+
+#asidebottom a {
+	color: #848484;
+	transition: all .2s;
+	margin-left: 5px;
+}
+
+#asidebottom a:hover {
+	margin-left: 8px;
+	color: #00aaff;
+}
+
+.msgTipRedPoint {
+	opacity: 0 !important;
+	font-size: 1px !important;
+	color: red;
+	position: absolute;
+	top: 5px;
+	right: 15px;
+	z-index: 999 !important;
+}
+
+.inviteNumber {
+	display: none;
+	background-color: gray;
+	color: white;
+	margin-top: 0.1em;
+	line-height: 1em;
+	height: 1.2em;
+	margin-left: 0.2em;
+	padding: 0.1em 0.2em 0.1em 0.2em;
+	border-radius: 5px;
+}

@@ -1,0 +1,378 @@
+@media screen and (max-width:767px) {
+	#asidearea > .segment,#mainarea > .segment {
+		-webkit-box-shadow: none !important;
+		box-shadow: none !important;
+		border-radius: none !important;
+		border: none !important;
+	}
+}
+
+#myheadphotocontainer {
+	width: 20%;
+	min-width: 130px;
+	display: inline-block;
+	margin-left: 5%;
+}
+
+#myheadphotoborder {
+	width: 120px;
+	height: 120px;
+	padding-left: 10px;
+	padding-top: 10px;
+	border: 2px solid #F8F8F8;
+	border-radius: 15px;
+	box-shadow: 0px 0px 5px gray;
+
+	background-image: url(../image/default_headphoto.png);
+	background-size: 75% 75%;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+#myheadphotocontainer img {
+	width: 100px;
+	height: auto;
+}
+
+#myinfo {
+	vertical-align: top;
+	max-width: 70%;
+	display: inline-block;
+	
+}
+
+#myinfo table {
+	width: 100%;
+}
+
+#myinfo td,#myinfo p {
+	min-width: 100px;
+	vertical-align: top;
+	line-height: 2em;
+}
+
+#myinfo p {
+	text-align: justify;
+	text-align-last: justify;
+	text-justify: distribute-all-lines;
+}
+
+@media screen and (max-width: 768px) {
+	#myinfo {
+		max-width: 90%;
+		margin-left: 5%;
+		display: block;
+		margin-top: 20px;
+	}
+	
+	#myheadphotocontainer {
+		width: 100%;
+		display: block;
+		text-align: center;
+		margin-left: 0;
+	}
+	
+	#myheadphotoborder {
+		display: inline-block;
+		padding-left: 0px;
+		padding-top: 10px;
+	}
+	
+	#nickname {
+		text-align: center;
+	}
+}
+
+@media screen and (max-width: 450px) {
+	.mainarea_tabs {
+		font-size: 0.75em;
+	}
+}
+
+#nickname {
+	height: 1.5em;
+	vertical-align: top;
+}
+
+.gray_info {
+	color: gray;
+}
+
+.hidewhenloading {
+	display: none !important;
+} 
+
+.aside_account_label {
+	color: gray;
+
+	margin-right: 5px;
+}
+
+.aside_account_div {
+	text-align: left;
+}
+
+#nickname_alter {
+	max-width: calc(50% - 70px);
+}
+
+.aside_account_labeltd {
+	width: 40%;
+}
+
+.aside_account_divtd {
+	width: 60%;
+}
+
+#account_settings td {
+	height: 60px;
+}
+
+#nickname_modal,#motto_modal {
+	width: 300px;
+}
+
+.tip_for_alter {
+	margin-top: 10px;
+	text-align: center;
+}
+
+.tip_modal_pic {
+	width: 200px;
+	height: auto;
+}
+
+#headphoto_modal {
+	max-width: 600px;
+}
+
+@media screen and (max-width: 768px) {
+	.max_below_768 {
+		width: 100%;
+		text-align: center;
+	}
+}
+
+#headphoto_alter_container {
+	width: 80%;
+	height: 80%;
+	margin-left: 10%;
+	margin-top: 10%;
+	border: 2px solid #424242;
+	border-radius: 100%;
+	text-align: center;
+	
+	background-image: url(../image/default_headphoto.png);
+	background-size: 100% 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+#headphoto_alter_container img {
+	width: 80%;
+	height: 80%;
+	margin-top: 10%;
+	margin-bottom: 10%;
+	z-index: -1;
+}
+
+.highdescription {
+	height: 2em;
+}
+
+.redtip {
+	color: red;
+	font-weight: 900;
+}
+
+.showAfterTabLoaded {
+	display: none;
+}
+
+.showAfterTabLoaded * {
+	max-width: 100%;
+}
+
+.emptyResult {
+	height: 8em;
+	width: 100%;
+	text-align: center;
+}
+
+.emptyImg {
+	text-align: center;
+	height: 4em;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+.emptyImg img {
+	height: 100%;
+	width: auto;
+	filter: invert(40%);
+}
+
+.emptyWord {
+	text-align: center;
+	color: gray;
+}
+
+#fans,#followers {
+	max-height: 300px;
+	overflow-y: auto;
+}
+
+.fanHeadPhoto,.followHeadPhoto {
+	width: 30%;
+	display: inline-block;
+	vertical-align: middle;
+	height: 3em;
+	width: 3em;
+}
+
+.fanNickname,.followNickname {
+	display: inline-block;
+	vertical-align: middle;
+	width: 60%;
+	text-align: center;
+	margin-left: 10%;
+}
+
+.fanNickname h4,.followNickname h4 {
+	color: black;
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.fanNickname h4:hover,.followNickname h4:hover {
+	color: royalblue !important;
+}
+
+.fan,.follow {
+	height: 3em;
+	line-height: 3em;
+	margin-bottom: 2em;
+}
+
+.fanHeadPhoto img,.followHeadPhoto img {
+	width: 100%;
+	height: 100%;
+	border-radius: 100%;
+}
+
+@media screen and (max-width: 767px) {
+	.mobileHideTableHead {
+		display: none !important;
+	}
+}
+
+.articleTitle,
+.commentContent,
+.articleCollectionTitle,
+.questionTitle,
+.questionCollectionTitle {
+	font-weight: 800;
+	cursor: pointer;
+}
+
+.articleTitle:hover,
+.commentContent:hover,
+.articleCollectionTitle:hover,
+.comment .commentTo:hover,
+.questionTitle:hover,
+.questionCollectionTitle:hover {
+	color: royalblue !important;
+}
+
+.articleLastUpdateTime span,
+.articleCollectionLastUpdateTime span,
+.commentSubmitTime span,
+.questionLastUpdateTime span,
+.questionCollectionLastUpdateTime span {
+	font-weight: 400 !important;
+}
+
+.showAfterTabLoaded .input input {
+	margin-bottom: 0.5em !important;
+}
+
+.showAfterTabLoaded .input i {
+	margin-top: -3px !important;
+}
+
+.comment .commentTo {
+	cursor: pointer;
+}
+
+/* 回答 */
+
+.answerContentPreview,.collectionAnswerContentPreview {
+	padding: 1em 1em;
+	color: #444444;
+}
+
+.answerLastUpdateTime,.answerOperate,.collectionAnswerLastUpdateTime,.collectionAnswerOperate {
+	display: inline-block;
+}
+
+.answerQuestionTitle,.collectionAnswerQuestionTitle {
+	cursor: pointer;
+}
+
+.answerQuestionTitle h3,.collectionAnswerQuestionTitle {
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+	-webkit-user-select: none;
+	-moz-user-focus: none;
+	-moz-user-select: none;
+}
+
+.answerQuestionTitle:hover,.collectionAnswerQuestionTitle:hover {
+	color: royalblue;
+}
+
+.answerOperate,.collectionAnswerOperate {
+	float: right;
+}
+
+.answerContentPreview p,.collectionAnswerContentPreview p {
+	line-height: 2em;
+	cursor: pointer;
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+	-webkit-user-select: none;
+	-moz-user-focus: none;
+	-moz-user-select: none;
+	word-wrap: break-word;
+}
+
+.answerContentPreview p:hover,.collectionAnswerContentPreview p:hover {
+	color: gray;
+}
+
+.answerOperate span,.collectionAnswerOperate span {
+	cursor: pointer;
+	font-weight: 550;
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+	-webkit-user-select: none;
+	-moz-user-focus: none;
+	-moz-user-select: none;
+}
+
+.answerOperate span:hover,.collectionAnswerOperate span:hover {
+	font-weight: 300;
+	text-shadow: 0px 0px 1px black;
+}
+
+.deleteAnswer,.deleteCollectionAnswer {
+	color: orangered;
+	margin-right: 0.5em;
+}
+
+.alterAnswer {
+	color: royalblue;
+}
+
+.answerLastUpdateTime,.collectionAnswerLastUpdateTime {
+	color: #444444;
+}

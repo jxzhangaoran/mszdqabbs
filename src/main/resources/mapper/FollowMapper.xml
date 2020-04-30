@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="matsk.mszdqabbs.DAO.FollowDAO">
+    <select id="getFollowerCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM follow
+        WHERE to_follow = #{to_follow}
+    </select>
+
+    <insert id="follow">
+        INSERT INTO follow(
+        id,
+        to_follow,
+        follower
+        )
+        VALUES(
+        0,
+        #{to_follow},
+        #{follower}
+        )
+    </insert>
+
+    <select id="isAlreadyFollow" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM follow
+        WHERE to_follow = #{to_follow}
+        AND follower = #{follower}
+    </select>
+
+    <delete id="cancel">
+        DELETE FROM follow
+        WHERE to_follow = #{to_follow}
+        AND follower = #{follower}
+    </delete>
+
+    <select id="getFollowersOf" parameterType="java.lang.Integer" resultType="matsk.mszdqabbs.Pojo.User">
+        SELECT * FROM user
+        WHERE id IN
+        (SELECT follower FROM follow
+        WHERE to_follow = #{to_follow})
+    </select>
+
+    <select id="getFollowsOf" parameterType="java.lang.Integer" resultType="matsk.mszdqabbs.Pojo.User">
+        SELECT * FROM user
+        WHERE id IN
+        (SELECT to_follow FROM follow
+        WHERE follower = #{follower})
+    </select>
+</mapper>

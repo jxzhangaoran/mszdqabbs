@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="matsk.mszdqabbs.DAO.InviteDAO">
+    <select id="getHowManyNotReadInvitationOf" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM invite
+        WHERE be_invited = #{be_invited}
+        AND is_read = 0
+    </select>
+
+    <select id="getFollowsInvitationStateOf" resultType="matsk.mszdqabbs.Pojo.Invite">
+        SELECT * FROM invite
+        WHERE which_question = #{questionId}
+        AND inviter = #{inviter}
+        AND be_invited IN
+        (SELECT to_follow FROM follow
+        WHERE follower = #{inviter})
+    </select>
+
+    <select id="getSearchUsersInvitationStateOf" resultType="matsk.mszdqabbs.Pojo.Invite">
+        SELECT * FROM invite
+        WHERE which_question = #{questionId}
+        AND inviter = #{inviter}
+        AND be_invited IN
+        (SELECT id FROM user
+        WHERE POSITION(#{searchStr} IN username)
+        OR POSITION(#{searchStr} IN nickname))
+    </select>
+
+
+    <insert id="invite" parameterType="matsk.mszdqabbs.Pojo.Invite" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO invite(
+        id,
+        inviter,
+        be_invited,
+        which_question,
+        is_read,
+        invite_time
+        )
+        VALUES(
+        #{id},
+        #{inviter},
+        #{be_invited},
+        #{which_question},
+        #{is_read},
+        NOW()
+        )
+    </insert>
+
+    <select id="isAlreadyInvited" parameterType="matsk.mszdqabbs.Pojo.Invite" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM invite
+        WHERE inviter = #{inviter}
+        AND be_invited = #{be_invited}
+        AND which_question = #{which_question}
+    </select>
+
+    <select id="getMyInvitation" parameterType="java.lang.Integer" resultType="matsk.mszdqabbs.Pojo.Invite">
+        SELECT * FROM invite
+        WHERE be_invited = #{be_invited}
+        ORDER BY invite_time DESC
+    </select>
+
+    <update id="readInvite" parameterType="java.lang.Integer">
+        UPDATE invite
+        SET is_read = 1
+        WHERE id = #{inviteId}
+    </update>
+</mapper>

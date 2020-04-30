@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="matsk.mszdqabbs.DAO.CollectionDAO">
+    <insert id="collect">
+        INSERT INTO collection(
+        id,
+        collection_id,
+        collector,
+        collection_type
+        )
+        VALUES(
+        0,
+        #{collection_id},
+        #{collector},
+        #{collection_type}
+        )
+    </insert>
+
+    <select id="isAlreadyCollect" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM collection
+        WHERE collection_id = #{collection_id}
+        AND collector = #{collector}
+        AND collection_type = #{collection_type}
+    </select>
+
+    <delete id="cancel">
+        DELETE FROM collection
+        WHERE collection_id = #{collection_id}
+        AND collector = #{collector}
+        AND collection_type = #{collection_type}
+    </delete>
+
+    <select id="getCollectionsCollectedBy" parameterType="java.lang.Integer" resultType="matsk.mszdqabbs.Pojo.userCollection">
+        SELECT * FROM collection
+        WHERE collector = #{collector}
+    </select>
+</mapper>

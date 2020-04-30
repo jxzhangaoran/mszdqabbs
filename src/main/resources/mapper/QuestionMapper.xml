@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="matsk.mszdqabbs.DAO.QuestionDAO">
+    <insert id="insertNewQuestion" parameterType="matsk.mszdqabbs.Pojo.Question" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO question(
+        id,
+        title,
+        detail,
+        questioner,
+        submit_time,
+        last_update_time,
+        browse_count
+        )
+        VALUES(
+        #{id},
+        #{title},
+        #{detail},
+        #{questioner},
+        NOW(),
+        null,
+        0
+        )
+    </insert>
+
+    <select id="getAllQuestionDetail" resultType="java.lang.String">
+        SELECT detail FROM question
+    </select>
+
+    <select id="getSomeQuestionNew" resultType="matsk.mszdqabbs.Pojo.Question">
+        SELECT * FROM question ORDER BY submit_time DESC LIMIT ${startAt},${howMany}
+    </select>
+
+    <select id="getSomeQuestionPopular" resultType="matsk.mszdqabbs.Pojo.Question">
+        SELECT * FROM question ORDER BY browse_count DESC LIMIT ${startAt},${howMany}
+    </select>
+
+    <select id="getQuestionerOf" resultType="matsk.mszdqabbs.Pojo.User" parameterType="java.lang.Integer">
+        SELECT * FROM user WHERE id =
+        (SELECT questioner FROM question WHERE id = #{questionId})
+    </select>
+
+    <select id="getCollectionCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT COUNT(*) FROM collection
+        WHERE collection_type = 2
+        AND collection_id = #{questionId}
+    </select>
+
+    <select id="getLikeCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT COUNT(*) FROM agreeornot
+        WHERE evaluate_type = 2
+        AND agreeornot = 1
+        AND to_evaluate = #{questionId}
+    </select>
+
+    <select id="getAnswerCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT COUNT(*) FROM answer
+        WHERE which_question = #{questionId}
+    </select>
+
+    <select id="getDislikeCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT COUNT(*) FROM agreeornot
+        WHERE evaluate_type = 2
+        AND agreeornot = 0
+        AND to_evaluate = #{questionId}
+    </select>
+
+    <select id="getAllQuestionCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM question
+    </select>
+
+    <select id="getQuestionCountAskedBy" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM question
+        WHERE questioner = #{questioner}
+    </select>
+
+    <select id="getQuestionById" parameterType="java.lang.Integer" resultType="matsk.mszdqabbs.Pojo.Question">
+        SELECT * FROM question
+        WHERE id = #{questionId}
+    </select>
+
+    <update id="beBrowsed" parameterType="java.lang.Integer">
+        UPDATE question SET
+        browse_count = browse_count + 1
+        WHERE id = #{questionId}
+    </update>
+
+    <select id="getQuestionsAskedBy" parameterType="java.lang.Integer" resultType="matsk.mszdqabbs.Pojo.Question">
+        SELECT * FROM question
+        WHERE questioner = #{questioner}
+    </select>
+
+    <update id="updateQuestion">
+        UPDATE question SET
+        title = #{newTitle},
+        detail = #{newDetail},
+        last_update_time = NOW()
+        WHERE id = #{questionId}
+    </update>
+
+    <select id="getQuestionsCollectedBy" parameterType="java.lang.Integer" resultType="matsk.mszdqabbs.Pojo.Question">
+        SELECT * FROM question
+        WHERE id IN
+        (SELECT collection_id FROM collection
+        WHERE collector = #{collector}
+        AND collection_type = 2)
+    </select>
+
+    <select id="getQuestionerNicknameByQuestionId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT nickname FROM user
+        WHERE id = (SELECT questioner FROM question WHERE
+        id = #{questionId})
+    </select>
+
+    <select id="getQuestionTitleById" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT title FROM question
+        WHERE id = #{questionId}
+    </select>
+
+    <delete id="deleteQuestionAndAssociations" parameterType="java.lang.Integer">
+        DELETE FROM agreeornot WHERE evaluate_type = 4
+        AND to_evaluate IN
+        (SELECT id FROM comment WHERE to_comment_type = 0
+        AND to_comment IN
+        (SELECT id FROM answer WHERE which_question = #{questionId}));
+
+        DELETE FROM comment WHERE to_comment_type = 0
+        AND to_comment IN
+        (SELECT id FROM answer WHERE which_question = #{questionId});
+
+        DELETE FROM agreeornot WHERE evaluate_type = 0
+        AND to_evaluate IN
+        (SELECT id FROM answer WHERE which_question = #{questionId});
+
+        DELETE FROM collection WHERE collection_type = 0
+        AND collection_id IN
+        (SELECT id FROM answer WHERE which_question = #{questionId});
+
+        DELETE FROM answer WHERE which_question = #{questionId};
+
+        DELETE FROM agreeornot WHERE evaluate_type = 2
+        AND to_evaluate = #{questionId};
+
+        DELETE FROM invite WHERE which_question = #{questionId};
+
+        DELETE FROM collection WHERE collection_type = 2
+        AND collection_id = #{questionId};
+
+        DELETE FROM question WHERE id = #{questionId};
+    </delete>
+
+    <resultMap id="searchQuestionResultMap" type="java.util.HashMap">
+        <id property="id" javaType="java.lang.Integer" jdbcType="INTEGER" column="id" />
+        <result property="type" javaType="java.lang.String" jdbcType="VARCHAR" column="type" />
+        <result property="title" javaType="java.lang.String" jdbcType="VARCHAR" column="title" />
+        <result property="content" javaType="java.lang.String" jdbcType="VARCHAR" column="content" />
+        <result property="author" javaType="java.lang.Integer" jdbcType="INTEGER" column="author" />
+        <result property="submit_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP" column="submit_time" />
+        <result property="last_update_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP" column="last_update" />
+        <result property="browse_count" javaType="java.lang.Integer" jdbcType="INTEGER" column="browse_count" />
+        <result property="score" javaType="java.lang.Double" jdbcType="DOUBLE" column="score" />
+    </resultMap>
+
+    <select id="searchQuestionInNaturalLanguageMode" parameterType="java.lang.String" resultMap="searchQuestionResultMap">
+        #自然语言搜索，使用到mysql自带的ngram解析器，自动按照匹配度从高到低排序
+        #需要对MATCH的列建立联合全文索引，并声明WITH PARSER ngram，在my.ini配置文件中[mysqld]下配置ngram_token_size=2
+        #结果封装为Map，score代表匹配度
+        SELECT id, 'question' as type, title, detail, questioner, submit_time, last_update_time, browse_count,
+               MATCH(title, detail) AGAINST(#{searchVal}) as score
+        FROM question
+        HAVING score > 0
+        ORDER BY score DESC
+    </select>
+</mapper>

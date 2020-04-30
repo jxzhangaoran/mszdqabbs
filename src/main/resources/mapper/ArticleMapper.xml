@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="matsk.mszdqabbs.DAO.ArticleDAO">
+    <insert id="insertNewArticle" parameterType="matsk.mszdqabbs.Pojo.Article" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO article(
+        id,
+        title,
+        content,
+        author,
+        submit_time,
+        browse_count
+        )
+        VALUES(
+        #{id},
+        #{title},
+        #{content},
+        #{author},
+        NOW(),
+        0
+        )
+    </insert>
+
+    <select id="getAllArticleContent" resultType="java.lang.String">
+        SELECT content FROM article
+    </select>
+
+    <select id="getSomeArticleNew" resultType="matsk.mszdqabbs.Pojo.Article">
+        SELECT * FROM article ORDER BY submit_time DESC LIMIT ${startAt},${howMany}
+    </select>
+
+    <select id="getSomeArticlePopular" resultType="matsk.mszdqabbs.Pojo.Article">
+        SELECT * FROM article ORDER BY browse_count DESC LIMIT ${startAt},${howMany}
+    </select>
+
+    <select id="getAuthorOf" resultType="matsk.mszdqabbs.Pojo.User" parameterType="java.lang.Integer">
+        SELECT * FROM user WHERE id =
+        (SELECT author FROM article WHERE id = #{articleId})
+    </select>
+
+    <select id="getCollectionCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT COUNT(*) FROM collection
+        WHERE collection_type = 1
+        AND collection_id = #{articleId}
+    </select>
+
+    <select id="getLikeCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT COUNT(*) FROM agreeornot
+        WHERE evaluate_type = 1
+        AND agreeornot = 1
+        AND to_evaluate = #{articleId}
+    </select>
+
+    <select id="getDislikeCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT COUNT(*) FROM agreeornot
+        WHERE evaluate_type = 1
+        AND agreeornot = 0
+        AND to_evaluate = #{articleId}
+    </select>
+
+    <select id="getCommentCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT COUNT(*) FROM comment
+        WHERE to_comment_type = 1
+        AND to_comment = #{articleId}
+    </select>
+
+    <select id="getAllArticleCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM article
+    </select>
+
+    <select id="getArticleCountWriteBy" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM article
+        WHERE author = #{author}
+    </select>
+
+    <select id="getArticleById" parameterType="java.lang.Integer" resultType="matsk.mszdqabbs.Pojo.Article">
+        SELECT * FROM article
+        WHERE id = #{articleId}
+    </select>
+
+    <update id="beBrowsed" parameterType="java.lang.Integer">
+        UPDATE article SET
+        browse_count = browse_count + 1
+        WHERE id = #{articleId}
+    </update>
+
+    <select id="getArticlesWriteBy" parameterType="java.lang.Integer" resultType="matsk.mszdqabbs.Pojo.Article">
+        SELECT * FROM article
+        WHERE author = #{author}
+    </select>
+
+    <update id="updateArticle">
+        UPDATE article SET
+        title = #{newTitle},
+        content = #{newContent},
+        last_update_time = NOW()
+        WHERE id = #{articleId}
+    </update>
+
+    <delete id="deleteArticleAndAssociations" parameterType="java.lang.Integer">
+        DELETE FROM agreeornot WHERE evaluate_type = 3 AND to_evaluate IN
+        (SELECT id FROM comment WHERE to_comment_type = 1 AND to_comment = #{articleId});
+
+        DELETE FROM comment WHERE to_comment_type = 1 AND to_comment = #{articleId};
+
+        DELETE FROM collection WHERE collection_type = 1 AND collection_id = #{articleId};
+
+        DELETE FROM agreeornot WHERE evaluate_type = 1 AND to_evaluate = #{articleId};
+
+        DELETE FROM article WHERE id = #{articleId};
+    </delete>
+
+    <select id="getArticlesCollectedBy" parameterType="java.lang.Integer" resultType="matsk.mszdqabbs.Pojo.Article">
+        SELECT * FROM article
+        WHERE id IN
+        (SELECT collection_id FROM collection
+        WHERE collector = #{collector}
+        AND collection_type = 1)
+    </select>
+
+    <select id="getAuthorNicknameByArticleId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT nickname FROM user
+        WHERE id = (SELECT author FROM article WHERE
+        id = #{articleId})
+    </select>
+
+    <resultMap id="searchArticleResultMap" type="java.util.HashMap">
+        <id property="id" javaType="java.lang.Integer" jdbcType="INTEGER" column="id" />
+        <result property="type" javaType="java.lang.String" jdbcType="VARCHAR" column="type" />
+        <result property="title" javaType="java.lang.String" jdbcType="VARCHAR" column="title" />
+        <result property="content" javaType="java.lang.String" jdbcType="VARCHAR" column="content" />
+        <result property="author" javaType="java.lang.Integer" jdbcType="INTEGER" column="author" />
+        <result property="submit_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP" column="submit_time" />
+        <result property="last_update_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP" column="last_update" />
+        <result property="browse_count" javaType="java.lang.Integer" jdbcType="INTEGER" column="browse_count" />
+        <result property="score" javaType="java.lang.Double" jdbcType="DOUBLE" column="score" />
+    </resultMap>
+
+    <select id="searchArticleInNaturalLanguageMode" parameterType="java.lang.String" resultMap="searchArticleResultMap">
+        #自然语言搜索，使用到mysql自带的ngram解析器，自动按照匹配度从高到低排序
+        #需要对MATCH的列建立联合全文索引，并声明WITH PARSER ngram，在my.ini配置文件中[mysqld]下配置ngram_token_size=2
+        #结果封装为Map，score代表匹配度
+        SELECT id, 'article' as type, title, content, author, submit_time, last_update_time, browse_count,
+                MATCH(title, content) AGAINST(#{searchVal}) as score
+        FROM article
+        HAVING score > 0
+        ORDER BY score DESC
+    </select>
+</mapper>

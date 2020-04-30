@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="matsk.mszdqabbs.DAO.UserDAO">
+    <insert id="register" parameterType="matsk.mszdqabbs.Pojo.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user(
+        id,
+        username,
+        encrypted_password,
+        email,
+        nickname,
+        motto,
+        head_photo_path,
+        head_photo_url,
+        head_photo_name,
+        register_time,
+        last_login_time,
+        last_update_info_time,
+        last_login_ip
+        )
+        VALUES(
+        #{id},
+        #{username},
+        #{encrypted_password},
+        #{email},
+        #{nickname},
+        #{motto},
+        #{head_photo_path},
+        #{head_photo_url},
+        #{head_photo_name},
+        #{register_time},
+        #{last_login_time},
+        #{last_update_info_time},
+        #{last_login_ip}
+        )
+    </insert>
+
+    <select id="emailExistsCheck" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM user
+        WHERE email = #{email}
+    </select>
+
+    <select id="usernameExistsCheck" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM user
+        WHERE username = #{username}
+    </select>
+
+    <select id="nicknameExistsCheck" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM user
+        WHERE nickname = #{nickname}
+    </select>
+
+    <select id="loginWithEmail" resultType="matsk.mszdqabbs.Pojo.User">
+        SELECT * FROM user
+        WHERE email = #{email}
+        AND encrypted_password = #{encrypted_password}
+    </select>
+
+    <select id="loginWithUsername" resultType="matsk.mszdqabbs.Pojo.User">
+        SELECT * FROM user
+        WHERE username = #{username}
+        AND encrypted_password = #{encrypted_password}
+    </select>
+
+    <select id="getUser" parameterType="java.lang.Integer" resultType="matsk.mszdqabbs.Pojo.User">
+        SELECT * FROM user
+        WHERE id = #{id}
+    </select>
+
+    <select id="getAutoIncrement" resultType="java.lang.Integer">
+        SELECT MAX(id) FROM user
+    </select>
+
+    <update id="updateLoginInfoById">
+        UPDATE user SET
+        last_login_time = #{last_login_time},
+        last_login_ip = #{last_login_ip}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateNickname">
+        UPDATE user SET
+        nickname = #{nickname},
+        last_update_info_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateMotto">
+        UPDATE user SET
+        motto = #{motto},
+        last_update_info_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateHeadPhotoInfo">
+        UPDATE user SET
+        head_photo_path = #{head_photo_path},
+        head_photo_url  = #{head_photo_url},
+        head_photo_name = #{head_photo_name},
+        last_update_info_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE user SET
+        encrypted_password = #{newPassword},
+        last_update_info_time = NOW()
+        WHERE email = #{email}
+    </update>
+
+    <select id="findUsersLikely" resultType="matsk.mszdqabbs.Pojo.User">
+#         使用POSITION函数代替LIKE,可以有效提高查询效率
+#         可以加BINARY在查询关键字前，代表大小写敏感查询
+#         搜索对象不包括搜索者自己，未登录状态下使用-1代替self
+        SELECT * FROM user
+        WHERE (POSITION(#{usernameOrNickname} IN username)
+        OR POSITION(#{usernameOrNickname} IN nickname))
+        AND (id != #{self})
+    </select>
+
+    <resultMap id="searchUserResultMap" type="java.util.HashMap">
+        <id property="id" javaType="java.lang.Integer" jdbcType="INTEGER" column="id" />
+        <result property="type" javaType="java.lang.String" jdbcType="VARCHAR" column="type" />
+        <result property="username" javaType="java.lang.String" jdbcType="VARCHAR" column="username" />
+        <result property="nickname" javaType="java.lang.String" jdbcType="VARCHAR" column="nickname" />
+        <result property="motto" javaType="java.lang.String" jdbcType="VARCHAR" column="motto" />
+        <result property="head_photo_url" javaType="java.lang.String" jdbcType="VARCHAR" column="head_photo_url" />
+        <result property="score" javaType="java.lang.Double" jdbcType="DOUBLE" column="score" />
+    </resultMap>
+
+    <select id="searchUserInNaturalLanguageMode" parameterType="java.lang.String" resultMap="searchUserResultMap">
+        #自然语言搜索，使用到mysql自带的ngram解析器，自动按照匹配度从高到低排序
+        #需要对MATCH的列建立联合全文索引，并声明WITH PARSER ngram，在my.ini配置文件中[mysqld]下配置ngram_token_size=2
+        #结果封装为Map，score代表匹配度
+        SELECT id, 'user' as type, username, nickname, motto, head_photo_url,
+               MATCH(username,nickname) AGAINST(#{usernameOrNickname}) as score
+        FROM user
+        HAVING score > 0
+        ORDER BY score DESC;
+    </select>
+</mapper>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>注册 | 码上知道</title>
+
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+		<link rel="shortcut icon " type="images/x-icon" href="image/favicon.ico" />
+		<link href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.css" rel="stylesheet">
+		<link href="https://cdn.bootcss.com/semantic-ui/2.4.1/semantic.min.css" rel="stylesheet">
+		<link href="css/register.css" rel="stylesheet" />
+
+		<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://cdn.bootcss.com/semantic-ui/2.4.1/semantic.min.js"></script>
+		<script src="js/register.js"></script>
+
+	</head>
+	<body>
+		<div class="ui container center aligned grid">
+			<div class="column">
+				<div id="logocontainer">
+					<img src="image/logo.png" alt="logo"/>
+				</div>
+				<h2 class="ui blue image header" id="welcometitle">
+					<img src="image/default_headphoto.png" class="image">
+					<div class="content">
+						欢迎注册码上知道
+					</div>
+				</h2>
+
+				<div class="ui ordered steps" id="steps">
+					<div class="active step" id="step1">
+						<div class="content">
+							<div class="title">验证邮箱</div>
+							<div class="description">系统将发送一封电子邮件给您</div>
+						</div>
+					</div>
+					<div class="step" id="step2">
+						<div class="content">
+							<div class="title">填写信息</div>
+							<div class="description">输入您的用户信息</div>
+						</div>
+					</div>
+				</div>
+
+				<form class="ui large form" id="emailform">
+					<div class="ui stacked segment">
+						<div class="field" id="emailfield">
+							<div class="ui left icon input">
+								<i class="envelope open icon"></i>
+								<input type="text" name="emailinput" id="emailinput" placeholder="邮箱地址" autocomplete="off" />
+								<button type="button" id="emailsender" class="ui inverted blue button">发送</button>
+							</div>
+						</div>
+						<div class="field">
+							<div class="ui left icon input">
+								<i class="code icon"></i>
+								<input type="text" disabled="disabled" id="verifycodeinput" name="verifycodeinput" placeholder="验证码"
+								 autocomplete="off" />
+							</div>
+						</div>
+						<div id="nextstep" class="ui fluid large blue submit disabled button">下一步</div>
+					</div>
+					<div class="ui error message" id="emailformerrmsg">
+						<ul class="list">
+
+						</ul>
+					</div>
+				</form>
+
+				<form class="ui large form" id="infoform">
+					<div class="ui stacked segment">
+						<div class="field">
+							<div class="ui left icon input">
+								<i class="address card icon"></i>
+								<input id="usernameinput" type="text" name="username" placeholder="用户名（4-16位字母+数字）" autocomplete="off" />
+							</div>
+						</div>
+						<div class="field">
+							<div class="ui left icon input">
+								<i class="user icon"></i>
+								<input id="nicknameinput" type="text" name="nickname" placeholder="昵称（2-10位字母/中文/数字/下划线）" autocomplete="off" />
+							</div>
+						</div>
+						<div class="field">
+							<div class="ui left icon input">
+								<i class="lock icon"></i>
+								<input id="passwordinput" type="password" name="password" placeholder="密码（6-20位字母+数字）" autocomplete="off" />
+							</div>
+						</div>
+						<div class="field" id="repasswordfield">
+							<div class="ui left icon input">
+								<i class="lock icon"></i>
+								<input id="repasswordinput" type="password" name="repassword" placeholder="确认密码" autocomplete="off" />
+							</div>
+						</div>
+						<div class="field" style="text-align: left;" id="robotCheck">
+							<div class="ui checkbox">
+								<input id="notrobotinput" type="checkbox" name="notrobot" tabindex="0" class="hidden">
+								<label>我不是机器人</label>
+							</div>
+						</div>
+						<div id="registersubmit" class="ui fluid large blue submit button">注册</div>
+					</div>
+					<div id="infoformerrmsg" class="ui error message">
+						<ul class="list">
+
+						</ul>
+					</div>
+				</form>
+				
+				<!-- 机器人验证模态框 -->
+				<div class="ui basic modal" id="robotChecker">
+				  <div class="ui icon header">
+				    <i class="hand point down outline icon"></i>
+				    证明你自己
+				  </div>
+				  <div class="content">
+				    <h2>请输入以下问题的答案：</h2>
+					<p>
+						<span id="num1"></span>&nbsp;
+						<span id="opr"></span>&nbsp;
+						<span id="num2"></span>&nbsp;=&nbsp;
+						<span id="res"></span>&nbsp;是&nbsp;
+						<span id="judge"></span>&nbsp;的</p>
+				  </div>
+				  <div class="actions">
+				    <div class="ui red basic cancel inverted button" id="calcanswerno">
+				      <i class="remove icon"></i>
+				      否
+				    </div>
+				    <div class="ui green ok inverted button" id="calcansweryes">
+				      <i class="checkmark icon"></i>
+				      是
+				    </div>
+				  </div>
+				</div>
+				
+				<!-- 注册成功模态框 -->
+				<div class="ui basic modal" id="registerSuccess">
+				  <div class="ui icon header">
+				    <i class="check green icon"></i>
+				    感谢！
+				  </div>
+				  <div class="content">
+				    <h2>您已注册成功，系统将在&nbsp;<span id="redirecttime"></span>&nbsp;秒后跳转...</h2>
+					<p>如果您的浏览器没有响应，请手动点击“跳转”。</p>
+				  </div>
+				  <div class="actions">
+				    <div class="ui green ok inverted button" id="calcansweryes">
+				      跳转&nbsp;
+					  <i class="arrow alternate circle right icon"></i>
+				    </div>
+				  </div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
