@@ -7,7 +7,7 @@ package matsk.mszdqabbs.Configuration.conf;
 public final class imageResourceMapper {
     //用户头像的存储映射
 
-    //要在浏览器显示的URL尾段，类似http://localhost:8080/image/1.jpg
+    //要在浏览器显示的URL尾段，类似http://localhost/image/1.jpg
     public static final String headPhotoUrlSuffix = "/headPhotoImage/";
     //Window本地文件夹，注意路径不能省略最后一个/
     public static final String headPhotoFileLocation = "E://uploadFiles/mszdqabbs/headPhotoImage/";
@@ -16,7 +16,7 @@ public final class imageResourceMapper {
 
     //文章里的图片的存储映射
 
-    //要在浏览器显示的URL尾段，类似http://localhost:8080/image/1.jpg
+    //要在浏览器显示的URL尾段，类似http://localhost/image/1.jpg
     public static final String contentPhotoUrlSuffix = "/contentPhotoImage/";
     //本地文件夹，注意路径不能省略最后一个/
     public static final String contentPhotoFileLocation = "E://uploadFiles/mszdqabbs/contentPhotoImage/";

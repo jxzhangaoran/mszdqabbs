@@ -27,5 +27,13 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 logging:
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+  file:
+    max-history: 30
+    max-size: 10MB
+    path: "./logs"
+    name: "./logs/mszdqabbs.log"
   level:
-    root: error
+    root: INFO
