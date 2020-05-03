@@ -112,3 +112,9 @@ show variables like 'ft_min_word_len';
 
 show variables like 'ngram_min_token_size';
 ```
+
+### 更新日志
+
+#### 2020-05-03
+     -修复了部分页面没有“邀请回答”链接的bug；
+     -新增了基于SpringAOP的日志支持。
