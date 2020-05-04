@@ -379,7 +379,7 @@ $(document).ready(function() {
 							//绑定头像
 							if (response[i].headPhotoUrl != null && response[i].headPhotoUrl != "") {
 								$follow.find("img").attr("src", response[i].headPhotoUrl);
-							}
+							} else $follow.find("img").attr("src", "image/default_headphoto.png");
 							//绑定昵称
 							$follow.find("h4").html(response[i].nickname);
 							//绑定用户主页URL

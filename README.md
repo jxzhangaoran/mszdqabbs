@@ -118,3 +118,6 @@ show variables like 'ngram_min_token_size';
 #### 2020-05-03
      -修复了部分页面没有“邀请回答”链接的bug；
      -新增了基于SpringAOP的日志支持。
+
+#### 2020-05-04
+     -修复了“邀请回答”功能中关注用户头像显示错误的bug。
