@@ -10,7 +10,7 @@
     </parent>
     <groupId>matsk</groupId>
     <artifactId>mszdqabbs</artifactId>
-    <version>1.2.0</version>
+    <version>2.0.0</version>
     <name>mszdqabbs</name>
     <description>A question and answer bbs for coders.</description>
 
