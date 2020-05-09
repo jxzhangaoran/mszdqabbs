@@ -50,7 +50,7 @@
 
 ## 项目技术栈
 
-- 数据库：MySQL 8.0
+- 数据库：MySQL 8.0 + Redis
 - 后端：SpringBoot + MyBatis + JWT + Tomcat
 - 前端：Semantic UI + Editor.md + jQuery
 - 项目构建和部署：Maven + Docker
@@ -58,7 +58,7 @@
 ## 如何部署
 
 **你可以直接运行jar包，或者使用Docker进行部署。建议在Linux环境下部署。**
-**无论使用哪种方式，你都需要自行建好数据库表，建表的SQL文件：*[qabbs.sql](https://github.com/jxzhangaoran/mszdqabbs/blob/master/qabbs.sql "qabbs.sql")***
+**无论使用哪种方式，你都需要使用MySQL8.0自行建好数据库表，并在本机安装好Redis。建表的SQL文件：*[qabbs.sql](https://github.com/jxzhangaoran/mszdqabbs/blob/master/qabbs.sql "qabbs.sql")***
 ### 直接运行jar包方式
 需要环境：JDK版本在**13.0.2**以上、MySQL版本**8.0**
 在Release里下载mszdqabbs-1.0.0.jar到本地，然后在控制台运行命令：
@@ -70,7 +70,7 @@
 ### 使用Docker进行部署
 
 首先，你需要在自己的机器上安装好Docker。相关的教程可以自行搜索
-安装好之后，在本地新建一个文件夹，并将[Dockerfile](https://github.com/jxzhangaoran/mszdqabbs/blob/master/Dockerfile "Dockerfile")和[mszdqabbs-1.0.0.jar](https://github.com/jxzhangaoran/mszdqabbs/releases/download/v1.0.0/mszdqabbs-1.0.0.jar "mszdqabbs-1.0.0.jar")文件放到该目录下。
+安装好之后，在本地新建一个文件夹，并将[Dockerfile](https://github.com/jxzhangaoran/mszdqabbs/blob/master/Dockerfile "Dockerfile")和[mszdqabbs-2.0.0.jar](https://github.com/jxzhangaoran/mszdqabbs/releases/download/v2.0.0/mszdqabbs-2.0.0.jar "mszdqabbs-2.0.0.jar")文件放到该目录下。
 
 使用`su`切换到root用户权限，方便之后操作。
 
@@ -113,6 +113,17 @@ show variables like 'ft_min_word_len';
 show variables like 'ngram_min_token_size';
 ```
 
+### Redis相关配置
+
+本项目只是简单地使用了Redis作为缓存中间件，不存在集群部署的问题。
+host指定为localhost，端口为默认的6379。
+您只需要安装好Redis，然后在本机以Daemon（后台）启动Redis服务器即可：
+
+```bash
+your_redis_install_path/redis-service redis.conf
+```
+其中redis.conf是您的配置文件，请自行搜索如何修改配置文件，配置为后台运行方式。
+
 ### 更新日志
 
 #### 2020-05-03
@@ -121,3 +132,7 @@ show variables like 'ngram_min_token_size';
 
 #### 2020-05-04
      -修复了“邀请回答”功能中关注用户头像显示错误的bug。
+
+#### 2020-05-09
+     -集成了Spring Data Redis组件，使用Redis数据库作为缓存中间件
+     -提高了响应速度

@@ -5,6 +5,7 @@ import matsk.mszdqabbs.Pojo.Answer;
 import matsk.mszdqabbs.Pojo.User;
 import matsk.mszdqabbs.Scheduled.CleanUnusedContentImageSchedule;
 import matsk.mszdqabbs.Service.AnswerService;
+import matsk.mszdqabbs.Service.RedisService;
 import matsk.mszdqabbs.Service.UserService;
 import matsk.mszdqabbs.Utils.JacksonUtils;
 import matsk.mszdqabbs.Utils.TokenUtils;
@@ -24,13 +25,13 @@ public class AnswerServiceImpl implements AnswerService {
     @Autowired
     private AnswerDAO answerDAO;
     @Autowired
-    private EvaluateDAO evaluateDAO;
-    @Autowired
     private FollowDAO followDAO;
     @Autowired
     private CollectionDAO collectionDAO;
     @Autowired
     private UserService userService;
+    @Autowired
+    private RedisService redisService;
 
     private static final int howManyForEachPage = 3;//每页显示几篇回答
 
@@ -112,10 +113,10 @@ public class AnswerServiceImpl implements AnswerService {
                     eachAnswer.put("answererHeadPhotoUrl",answerer.get(0).getHead_photo_url());
                 }
                 //收藏次数
-                int collectionCount = answerDAO.getCollectionCount(a.getId());
+                int collectionCount = redisService.getCollectionCount(a.getId(), 0);
                 eachAnswer.put("collectionCount",collectionCount);
                 //点赞次数
-                int likeCount = answerDAO.getLikeCount(a.getId());
+                int likeCount = redisService.getEvaluateCount(a.getId(), 0 , 1);
                 eachAnswer.put("likeCount",likeCount);
                 //评论数量
                 int commentCount = answerDAO.getCommentCount(a.getId());
@@ -157,8 +158,8 @@ public class AnswerServiceImpl implements AnswerService {
                 }
                 resultMap.put("answer",thisAnswer.get(0));
                 resultMap.put("commentCount",answerDAO.getCommentCount(answerId));
-                resultMap.put("collectionCount",answerDAO.getCollectionCount(answerId));
-                resultMap.put("likeCount",answerDAO.getLikeCount(answerId));
+                resultMap.put("collectionCount", redisService.getCollectionCount(answerId, 0));
+                resultMap.put("likeCount", redisService.getEvaluateCount(answerId, 0 , 1));
                 resultMap.put("questionId", thisAnswer.get(0).getWhich_question());
                 resultMap.put("questionTitle", answerDAO.getQuestionTitleByAnswerId(answerId));
                 resultMap.put("questionAnswerCount", answerDAO.getQuestionAnswerCountByAnswerId(answerId));
@@ -188,14 +189,9 @@ public class AnswerServiceImpl implements AnswerService {
     public String likeOrDislike(int answerId, int likeOrDislike) {
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("success","false");
-        if(likeOrDislike == 0) {
-            if(evaluateDAO.dislike(answerId,0) == 1) {
-                resultMap.put("success","true");
-            }
-        } else if(likeOrDislike == 1) {
-            if(evaluateDAO.like(answerId,0) == 1) {
-                resultMap.put("success","true");
-            }
+        if(likeOrDislike == 0 || likeOrDislike == 1) {
+            redisService.likeOrDislike(answerId, 0, likeOrDislike);
+            resultMap.put("success","true");
         }
         return JacksonUtils.mapToJson(resultMap);
     }

@@ -1,13 +1,13 @@
 package matsk.mszdqabbs.Service.Impl;
 
 import matsk.mszdqabbs.DAO.CollectionDAO;
-import matsk.mszdqabbs.DAO.EvaluateDAO;
 import matsk.mszdqabbs.DAO.FollowDAO;
 import matsk.mszdqabbs.DAO.QuestionDAO;
 import matsk.mszdqabbs.Pojo.Question;
 import matsk.mszdqabbs.Pojo.User;
 import matsk.mszdqabbs.Scheduled.CleanUnusedContentImageSchedule;
 import matsk.mszdqabbs.Service.QuestionService;
+import matsk.mszdqabbs.Service.RedisService;
 import matsk.mszdqabbs.Service.UserService;
 import matsk.mszdqabbs.Utils.JacksonUtils;
 import matsk.mszdqabbs.Utils.TokenUtils;
@@ -27,13 +27,13 @@ public class QuestionServiceImpl implements QuestionService {
     @Autowired
     private QuestionDAO questionDAO;
     @Autowired
-    private EvaluateDAO evaluateDAO;
-    @Autowired
     private FollowDAO followDAO;
     @Autowired
     private CollectionDAO collectionDAO;
     @Autowired
     private UserService userService;
+    @Autowired
+    private RedisService redisService;
 
     private static final int howManyForEachPage = 3;//每页显示几个问题
 
@@ -110,10 +110,10 @@ public class QuestionServiceImpl implements QuestionService {
                     eachQuestion.put("questionerHeadPhotoUrl",questioner.get(0).getHead_photo_url());
                 }
                 //收藏次数
-                int collectionCount = questionDAO.getCollectionCount(q.getId());
+                int collectionCount = redisService.getCollectionCount(q.getId(), 2);
                 eachQuestion.put("collectionCount",collectionCount);
                 //点赞次数
-                int likeCount = questionDAO.getLikeCount(q.getId());
+                int likeCount = redisService.getEvaluateCount(q.getId(), 2, 1);
                 eachQuestion.put("likeCount",likeCount);
                 //回答数量
                 int answerCount = questionDAO.getAnswerCount(q.getId());
@@ -153,10 +153,10 @@ public class QuestionServiceImpl implements QuestionService {
                     e.printStackTrace();
                     return null;
                 }
-                resultMap.put("question",thisQuestion.get(0));
-                resultMap.put("answerCount",questionDAO.getAnswerCount(questionId));
-                resultMap.put("collectionCount",questionDAO.getCollectionCount(questionId));
-                resultMap.put("likeCount",questionDAO.getLikeCount(questionId));
+                resultMap.put("question", thisQuestion.get(0));
+                resultMap.put("answerCount", questionDAO.getAnswerCount(questionId));
+                resultMap.put("collectionCount", redisService.getCollectionCount(questionId, 2));
+                resultMap.put("likeCount", redisService.getEvaluateCount(questionId, 2, 1));
                 //用户未登录情况下，默认未关注、未收藏
                 resultMap.put("isAlreadyFollow","false");
                 resultMap.put("isAlreadyCollect","false");
@@ -183,14 +183,9 @@ public class QuestionServiceImpl implements QuestionService {
     public String likeOrDislike(int questionId, int likeOrDislike) {
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("success","false");
-        if(likeOrDislike == 0) {
-            if(evaluateDAO.dislike(questionId,2) == 1) {
-                resultMap.put("success","true");
-            }
-        } else if(likeOrDislike == 1) {
-            if(evaluateDAO.like(questionId,2) == 1) {
-                resultMap.put("success","true");
-            }
+        if(likeOrDislike == 0 || likeOrDislike == 1) {
+            redisService.likeOrDislike(questionId, 2, likeOrDislike);
+            resultMap.put("success","true");
         }
         return JacksonUtils.mapToJson(resultMap);
     }

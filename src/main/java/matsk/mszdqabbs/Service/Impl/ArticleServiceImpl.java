@@ -5,6 +5,7 @@ import matsk.mszdqabbs.Pojo.Article;
 import matsk.mszdqabbs.Pojo.User;
 import matsk.mszdqabbs.Scheduled.CleanUnusedContentImageSchedule;
 import matsk.mszdqabbs.Service.ArticleService;
+import matsk.mszdqabbs.Service.RedisService;
 import matsk.mszdqabbs.Service.UserService;
 import matsk.mszdqabbs.Utils.JacksonUtils;
 import matsk.mszdqabbs.Utils.TokenUtils;
@@ -21,13 +22,13 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private ArticleDAO articleDAO;
     @Autowired
-    private EvaluateDAO evaluateDAO;
-    @Autowired
     private FollowDAO followDAO;
     @Autowired
     private CollectionDAO collectionDAO;
     @Autowired
     private UserService userService;
+    @Autowired
+    private RedisService redisService;
 
     private static final int howManyForEachPage = 3;//每页显示几篇文章
 
@@ -107,10 +108,10 @@ public class ArticleServiceImpl implements ArticleService {
                     eachArticle.put("authorHeadPhotoUrl",author.get(0).getHead_photo_url());
                 }
                 //收藏次数
-                int collectionCount = articleDAO.getCollectionCount(a.getId());
-                eachArticle.put("collectionCount",collectionCount);
+                int collectionCount = redisService.getCollectionCount(a.getId(), 1);
+                eachArticle.put("collectionCount", collectionCount);
                 //点赞次数
-                int likeCount = articleDAO.getLikeCount(a.getId());
+                int likeCount = redisService.getEvaluateCount(a.getId(), 1, 1);
                 eachArticle.put("likeCount",likeCount);
                 //评论数量
                 int commentCount = articleDAO.getCommentCount(a.getId());
@@ -152,8 +153,8 @@ public class ArticleServiceImpl implements ArticleService {
                 }
                 resultMap.put("article",thisArticle.get(0));
                 resultMap.put("commentCount",articleDAO.getCommentCount(articleId));
-                resultMap.put("collectionCount",articleDAO.getCollectionCount(articleId));
-                resultMap.put("likeCount",articleDAO.getLikeCount(articleId));
+                resultMap.put("collectionCount", redisService.getCollectionCount(articleId, 1));
+                resultMap.put("likeCount", redisService.getEvaluateCount(articleId, 1, 1));
                 //用户未登录情况下，默认未关注、未收藏
                 resultMap.put("isAlreadyFollow","false");
                 resultMap.put("isAlreadyCollect","false");
@@ -180,14 +181,9 @@ public class ArticleServiceImpl implements ArticleService {
     public String likeOrDislike(int articleId, int likeOrDislike) {
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("success","false");
-        if(likeOrDislike == 0) {
-            if(evaluateDAO.dislike(articleId,1) == 1) {
-                resultMap.put("success","true");
-            }
-        } else if(likeOrDislike == 1) {
-            if(evaluateDAO.like(articleId,1) == 1) {
-                resultMap.put("success","true");
-            }
+        if(likeOrDislike == 0 || likeOrDislike == 1) {
+            redisService.likeOrDislike(articleId, 1, likeOrDislike);
+            resultMap.put("success","true");
         }
         return JacksonUtils.mapToJson(resultMap);
     }

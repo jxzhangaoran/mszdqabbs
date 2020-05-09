@@ -18,6 +18,9 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+  redis:
+    port: 6379
+    host: "localhost"
 
 mybatis:
   type-aliases-package: matsk.mszdqabbs.Pojo

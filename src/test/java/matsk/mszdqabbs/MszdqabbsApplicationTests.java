@@ -7,10 +7,13 @@ import matsk.mszdqabbs.DAO.UserDAO;
 import matsk.mszdqabbs.Pojo.Article;
 import matsk.mszdqabbs.Scheduled.CleanUnusedContentImageSchedule;
 import matsk.mszdqabbs.Service.*;
+import matsk.mszdqabbs.Utils.RedisUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -30,6 +33,12 @@ class MszdqabbsApplicationTests {
     private AnswerDAO answerDAO;
     @Autowired
     private QuestionDAO questionDAO;
+    @Autowired
+    private RedisUtil redisUtil;
+    @Autowired
+    private RedisService redisService;
+    @Autowired
+    private ApplicationContext applicationContext;
 /*
     @Test
     void contextLoads() {
@@ -72,5 +81,11 @@ class MszdqabbsApplicationTests {
         res.stream().map((r) -> r.get("title") + "," + r.get("score")).forEach(System.out::println);
     }
 
- */
+    @Test
+    void testRedisUtil() {
+        for (String beanDefinitionName : applicationContext.getBeanDefinitionNames()) {
+            System.out.println(beanDefinitionName);
+        }
+    }
+*/
 }

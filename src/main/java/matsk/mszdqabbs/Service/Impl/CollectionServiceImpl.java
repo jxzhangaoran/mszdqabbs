@@ -2,6 +2,7 @@ package matsk.mszdqabbs.Service.Impl;
 
 import matsk.mszdqabbs.DAO.CollectionDAO;
 import matsk.mszdqabbs.Service.CollectionService;
+import matsk.mszdqabbs.Service.RedisService;
 import matsk.mszdqabbs.Utils.JacksonUtils;
 import matsk.mszdqabbs.Utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import java.util.Map;
 public class CollectionServiceImpl implements CollectionService {
     @Autowired
     private CollectionDAO collectionDAO;
+    @Autowired
+    private RedisService redisService;
 
     @Override
     @Transactional
@@ -23,17 +26,11 @@ public class CollectionServiceImpl implements CollectionService {
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("success","false");
         Integer collector = TokenUtils.getUid(request);
+        String res = null;
         if(collector != null) {
-            if(collectionDAO.isAlreadyCollect(collection_id, collector, collection_type) >= 1) {
-                if(collectionDAO.cancel(collection_id, collector, collection_type) == 1) {
-                    resultMap.put("success","true");
-                    resultMap.put("type","cancel");
-                }
-            } else {
-                if(collectionDAO.collect(collection_id, collector, collection_type) == 1) {
-                    resultMap.put("success","true");
-                    resultMap.put("type","collect");
-                }
+            if((res = redisService.toggleCollect(collection_id, collection_type, collector)) != null) {
+                resultMap.put("success", "true");
+                resultMap.put("type", res);
             }
         }
         return JacksonUtils.mapToJson(resultMap);

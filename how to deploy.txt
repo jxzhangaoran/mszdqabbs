@@ -8,6 +8,10 @@ ngram_token_size=2
 
 #启动数据库
 
+#安装Redis并配置后台运行
+
+#启动Redis服务
+
 #安装docker
 
 #在linux宿主机上创建一个目录用于保存jar包和Dockerfile（两者需要在同一个目录下）

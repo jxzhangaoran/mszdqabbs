@@ -3,9 +3,9 @@ package matsk.mszdqabbs.Service.Impl;
 import matsk.mszdqabbs.DAO.AnswerDAO;
 import matsk.mszdqabbs.DAO.ArticleDAO;
 import matsk.mszdqabbs.DAO.CommentDAO;
-import matsk.mszdqabbs.DAO.EvaluateDAO;
 import matsk.mszdqabbs.Pojo.Comment;
 import matsk.mszdqabbs.Service.CommentService;
+import matsk.mszdqabbs.Service.RedisService;
 import matsk.mszdqabbs.Service.UserService;
 import matsk.mszdqabbs.Utils.JacksonUtils;
 import matsk.mszdqabbs.Utils.TokenUtils;
@@ -24,11 +24,11 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private CommentDAO commentDAO;
     @Autowired
-    private EvaluateDAO evaluateDAO;
-    @Autowired
     private AnswerDAO answerDAO;
     @Autowired
     private UserService userService;
+    @Autowired
+    private RedisService redisService;
 
     private static final int howManyToShowAtOneTime = 5;//一次性显示多少评论，更多评论需要用户手动点击“查看所有评论”
 
@@ -137,9 +137,9 @@ public class CommentServiceImpl implements CommentService {
             //评论主体
             eachComment.put("comment", comment);
             //点赞次数
-            eachComment.put("likeCount", commentDAO.getLikeCount(comment.getId()));
+            eachComment.put("likeCount", redisService.getEvaluateCount(comment.getId(), 3, 1));
             //踩次数
-            eachComment.put("dislikeCount", commentDAO.getDislikeCount(comment.getId()));
+            eachComment.put("dislikeCount", redisService.getEvaluateCount(comment.getId(), 3, 0));
             //加入结果List
             resultList.add(eachComment);
         }
@@ -159,14 +159,9 @@ public class CommentServiceImpl implements CommentService {
     public String likeOrDislike(int commentId, int likeOrDislike) {
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("success","false");
-        if(likeOrDislike == 0) {
-            if(evaluateDAO.dislike(commentId,3) == 1) {
-                resultMap.put("success","true");
-            }
-        } else if(likeOrDislike == 1) {
-            if(evaluateDAO.like(commentId,3) == 1) {
-                resultMap.put("success","true");
-            }
+        if(likeOrDislike == 0 || likeOrDislike == 1) {
+            redisService.likeOrDislike(commentId, 3, likeOrDislike);
+            resultMap.put("success","true");
         }
         return JacksonUtils.mapToJson(resultMap);
     }
